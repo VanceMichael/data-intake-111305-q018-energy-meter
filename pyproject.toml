@@ -6,3 +6,16 @@ dependencies = []
 
 [tool.unittest]
 start-directory = "tests"
+
+[build-system]
+requires = ["setuptools==80.9.0", "wheel==0.45.1"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["energy_meter", "energy_meter.fixtures"]
+
+[tool.setuptools.package-dir]
+"energy_meter.fixtures" = "fixtures"
+
+[tool.setuptools.package-data]
+"energy_meter.fixtures" = ["*.json"]
