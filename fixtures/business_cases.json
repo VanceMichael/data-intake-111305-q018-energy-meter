@@ -1,17 +1,17 @@
 [
   {
-    "name": "signed_period",
-    "situation": "签发后迟到更正",
-    "observable": "保留快照并生成可解释调整建议"
+    "name": "name",
+    "situation": "situation",
+    "observable": "observable"
   },
   {
-    "name": "meter_generation",
-    "situation": "跨月换表或编号复用",
-    "observable": "不同代际累计值不相减"
+    "name": "name",
+    "situation": "situation",
+    "observable": "observable"
   },
   {
-    "name": "accepted_adjustment",
-    "situation": "调整接受后再次更正",
-    "observable": "差额链可追查且重复投递不重复建议"
+    "name": "name",
+    "situation": "situation",
+    "observable": "observable"
   }
 ]

@@ -18,6 +18,8 @@
 
 ## 领域样例
 
-- `signed_period`：签发后迟到更正；业务侧关注保留快照并生成可解释调整建议。
-- `meter_generation`：跨月换表或编号复用；业务侧关注不同代际累计值不相减。
-- `accepted_adjustment`：调整接受后再次更正；业务侧关注差额链可追查且重复投递不重复建议。
+- `name`：situation；业务侧关注observable。
+- `name`：situation；业务侧关注observable。
+- `name`：situation；业务侧关注observable。
+
+另外提供 `/rate-limited`、`/unstable`、`/range`、`/range-ignored`、`/truncated`、`/observations/1`、`/observations/2`、`/observations/3`。响应内容和版本由场景文件逐项声明，便于核对实际收到的来源资料。
