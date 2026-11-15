@@ -1,0 +1,92 @@
+{
+  "portal": {
+    "csrf": "form-2026-b"
+  },
+  "routes": {
+    "/feed/stage-1": {
+      "json": {
+        "items": [
+          {
+            "provider": "grid-a",
+            "meter": "M7-old",
+            "reading": "R10",
+            "revision": 1,
+            "at": "2026-10-31T23:00:00Z",
+            "value": "1000",
+            "quality": "estimated",
+            "multiplier": "2",
+            "period": "2026-10"
+          }
+        ]
+      }
+    },
+    "/feed/stage-2": {
+      "json": {
+        "items": [
+          {
+            "provider": "grid-a",
+            "meter": "M7-old",
+            "reading": "R10",
+            "revision": 2,
+            "at": "2026-10-31T23:00:00Z",
+            "value": "1012",
+            "quality": "measured",
+            "multiplier": "2",
+            "period": "2026-10"
+          }
+        ]
+      }
+    },
+    "/feed/stage-3": {
+      "json": {
+        "items": [
+          {
+            "provider": "grid-a",
+            "meter": "M7-new",
+            "reading": "R11",
+            "revision": 1,
+            "at": "2026-11-01T00:00:00Z",
+            "value": "8",
+            "quality": "measured",
+            "multiplier": null,
+            "period": "2026-11"
+          }
+        ]
+      }
+    },
+    "/feed/correction-1": {
+      "json": {
+        "items": [
+          {
+            "provider": "grid-a",
+            "meter": "M7-old",
+            "reading": "R10",
+            "revision": 3,
+            "at": "2026-10-31T23:00:00Z",
+            "value": "1020",
+            "quality": "measured",
+            "multiplier": "2",
+            "period": "2026-10"
+          }
+        ]
+      }
+    },
+    "/feed/correction-2": {
+      "json": {
+        "items": [
+          {
+            "provider": "grid-a",
+            "meter": "M7-old",
+            "reading": "R10",
+            "revision": 4,
+            "at": "2026-10-31T23:00:00Z",
+            "value": "1025",
+            "quality": "measured",
+            "multiplier": "2",
+            "period": "2026-10"
+          }
+        ]
+      }
+    }
+  }
+}

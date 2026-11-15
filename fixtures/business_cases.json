@@ -1,17 +1,32 @@
 [
   {
-    "name": "name",
-    "situation": "situation",
-    "observable": "observable"
+    "name": "乱序补传与读数更正",
+    "situation": "月账已按修订1的估算读数签发，供方先补发修订2的实测值，随后又补传历史修订且再发修订3/4；报文到达顺序与修订号无关。",
+    "observable": "reading_messages 全量保留每次修订；当前解释始终取最大修订号，解释版本追加不覆盖；重复投递只计 duplicates，不产生新解释或新调整建议。"
   },
   {
-    "name": "name",
-    "situation": "situation",
-    "observable": "observable"
+    "name": "已签发快照固化",
+    "situation": "财务不接受采集任务直接改历史账，签发时的读数副本、规则版本和解释摘要必须冻结。",
+    "observable": "snapshots 与 snapshot_readings 由数据库触发器禁止 UPDATE/DELETE；更正只生成 adjustment_suggestions，快照行及其 message_id 原样可查。"
   },
   {
-    "name": "name",
-    "situation": "situation",
-    "observable": "observable"
+    "name": "跨月换表与编号复用",
+    "situation": "M7-old 在 2026-10-31 留下旧表尾数，M7-new 从 2026-11-01 起算新表首数；同一设备编号 M3 在停用后被复用到新安装。",
+    "observable": "meter_series 按内部 install_id 分成互不相接的序列并给出 boundaries（旧表尾数/新表首数）；编号复用解析为两个 install_id，reused_label 为真，曲线绝不跨安装相接。"
+  },
+  {
+    "name": "未知倍率先待核",
+    "situation": "M7-new 的报文 multiplier 为 null，规则也没有已确认的倍率生效区间；若供方申报倍率与规则区间不一致同样需要核对。",
+    "observable": "multiplier_status=pending 且 factor 为 null、gross_value 为 null，multiplier_reason 说明原因；任何路径都不会把倍率默认成 1。"
+  },
+  {
+    "name": "调整建议幂等与链式差额",
+    "situation": "财务接受修订3产生的调整后，修订4又到；重复投递同一解释不能再生成建议。",
+    "observable": "建议按 snapshot_id+reading_key+interpretation_digest 唯一去重；新建议带 prior_suggestion_id，同时给出对签发口径的差额和对前次调整后口径的差额（delta_vs_prior_*）。"
+  },
+  {
+    "name": "财务并列查询与双向溯源",
+    "situation": "财务不重建计费系统，只查询接入状态，并要求从每个差异回到供方报文和适用规则。",
+    "observable": "finance_comparison 并列 issued/current/impact；trace_reading 列出供方各修订报文（含 capture_id/body 摘要）、解释版本、规则版本内容与调整链；pending_impacts 单列金额影响待核项。"
   }
 ]

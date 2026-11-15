@@ -1,0 +1,48 @@
+{
+  "meters": [
+    {
+      "provider": "grid-a",
+      "meter": "M7-old",
+      "install": "grid-a/M7-old@2026H2",
+      "valid_from": "2026-07-01T00:00:00Z",
+      "valid_to": "2026-11-01T00:00:00Z"
+    },
+    {
+      "provider": "grid-a",
+      "meter": "M7-new",
+      "install": "grid-a/M7-new@2026H2",
+      "valid_from": "2026-11-01T00:00:00Z"
+    },
+    {
+      "provider": "grid-a",
+      "meter": "M3",
+      "install": "grid-a/M3@2025",
+      "valid_from": "2025-01-01T00:00:00Z",
+      "valid_to": "2026-09-01T00:00:00Z"
+    },
+    {
+      "provider": "grid-a",
+      "meter": "M3",
+      "install": "grid-a/M3@2026-reuse",
+      "valid_from": "2026-09-01T00:00:00Z"
+    }
+  ],
+  "multipliers": [
+    {
+      "install": "grid-a/M7-old@2026H2",
+      "factor": "2",
+      "valid_from": "2026-07-01T00:00:00Z"
+    },
+    {
+      "install": "grid-a/M3@2025",
+      "factor": "1.5",
+      "valid_from": "2025-01-01T00:00:00Z",
+      "valid_to": "2026-09-01T00:00:00Z"
+    },
+    {
+      "install": "grid-a/M3@2026-reuse",
+      "factor": "3",
+      "valid_from": "2026-09-01T00:00:00Z"
+    }
+  ]
+}

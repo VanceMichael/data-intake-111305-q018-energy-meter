@@ -18,8 +18,10 @@
 
 ## 领域样例
 
-- `name`：situation；业务侧关注observable。
-- `name`：situation；业务侧关注observable。
-- `name`：situation；业务侧关注observable。
+- `R10` 修订1（估算 1000）与修订2（实测 1012）：同一读数的质量与修订并存，业务侧关注当前解释只取最大修订号且历史修订可回溯。
+- `M7-old` → `M7-new`：跨月换表，旧表尾数与新表首数属于不同安装身份，业务侧关注两条累计曲线不得相接。
+- `M7-new` 的 `multiplier` 为 `null`：业务侧关注该读数倍率待核、金额影响受阻，而不是按倍率一入账。
+
+`fixtures/staged-feed.json` 另提供分阶段路由（`/feed/stage-1` 至 `/feed/correction-2`），模拟乱序补传、重复投递与签发后的连续更正，供结构化台账演示使用。
 
 另外提供 `/rate-limited`、`/unstable`、`/range`、`/range-ignored`、`/truncated`、`/observations/1`、`/observations/2`、`/observations/3`。响应内容和版本由场景文件逐项声明，便于核对实际收到的来源资料。
