@@ -1,6 +1,6 @@
 # 能源抄表异常更正的账期锁定采集
 
-这是资料接收程序的基础版。它请求来源接口，保留响应状态、头部、原始内容与每次观察的时间，能够从 JSON、CSV 或门户嵌入的数据块读回来源记录。当前不生成面向业务的有效版本，也不自动执行门户提交；重复观察会分别保留，原始内容按摘要复用。
+这是资料接收程序。它请求来源接口，保留响应状态、头部、原始内容与每次观察的时间，能够从 JSON、CSV 或门户嵌入的数据块读回来源记录。重复观察会分别保留，原始内容按摘要复用。在原始归档之上另有**读数结构化接入层**：把表计身份、实测/估算质量、倍率生效区间与读数修订组织成只追加事实，冻结月度签发快照并维护调整建议链，供财务只读查询。该层不回改历史账单，也不实现计费。
 
 ## 运行环境
 
@@ -33,11 +33,24 @@ python3 -m energy_meter serve
 python3 -m energy_meter capture --base-url http://127.0.0.1:实际端口 --archive .runtime/raw.sqlite3 --source local-source --path /feed
 ```
 
-归档库只追加来源观察，不用最后一条响应覆盖先前响应。`archive.py` 管理原始内容及完整性，`client.py` 执行一次请求，`decoding.py` 负责来源格式解码，`origin.py` 提供协议演练。业务解释可与原始接收独立演进。
+归档库只追加来源观察，不用最后一条响应覆盖先前响应。`archive.py` 管理原始内容及完整性，`client.py` 执行一次请求，`decoding.py` 负责来源格式解码，`origin.py` 提供协议演练。业务解释与原始接收独立演进。
+
+## 读数结构化接入与财务查询
+
+原始归档之后，结构化层把报文中的供方记录接入独立的读数库（默认不随采集自动执行）：
+
+```sh
+python3 -m energy_meter ingest --archive .runtime/raw.sqlite3 --store .runtime/readings.sqlite3
+python3 -m energy_meter issue --store .runtime/readings.sqlite3 --reading R10 --provider grid-a
+python3 -m energy_meter finance status --store .runtime/readings.sqlite3
+python3 -m energy_meter finance difference --store .runtime/readings.sqlite3 --snapshot-id 1
+```
+
+设计与不变量见 `docs/structured-ingestion.md`：表计序列按（供方、设备编号、读数标识）界定，换表与编号复用不拼接累计曲线；未知倍率保持待核、绝不默认成一；补传更正乱序到达而事实只追加，当前解释取最高修订号；已签发快照及当时依据冻结，重复投递不产生第二笔调整建议；调整被接受后的再次更正通过 `prior_suggestion_id` 链接，并同时给出总差额与相对前次调整后口径的新增差额。财务可并列查看已签发读数、当前解释与待核影响，并从每个差异回到供方报文摘要、适用倍率区间与版本化规则。
 
 ## 开发资料
 
-来源协议见 `docs/source-protocol.md`，领域观察关系见 `tests/test_source_contract.py`。`fixtures/business_cases.json` 保存业务侧关注的交错情况及可观察口径；基础版测试验证的是原始采集和协议，不代表业务处理已经具备这些能力。所有条目、机构、文件内容和门户回执均为本地合成资料，不包含真实用户身份。
+来源协议见 `docs/source-protocol.md`，结构化接入设计见 `docs/structured-ingestion.md`，领域观察关系见 `tests/test_source_contract.py`。`fixtures/business_cases.json` 保存业务侧关注的交错情况及可观察口径，对应回归断言在 `tests/test_structured_ingestion.py` 与 `tests/test_business_cases.py`。所有条目、机构、文件内容和门户回执均为本地合成资料，不包含真实用户身份。
 
 ## Wheel 分发
 

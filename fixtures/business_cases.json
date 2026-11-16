@@ -1,17 +1,32 @@
 [
   {
-    "name": "name",
-    "situation": "situation",
-    "observable": "observable"
+    "name": "签发后更正",
+    "situation": "月账已按 rev1 估算读数 1000 签发，供方随后补发同一读数标识 R10 的 rev2 实测更正 1012。",
+    "observable": "已签发快照仍冻结 rev1 的读数、质量、倍率与规则版本；当前解释更新为 rev2；系统只生成一笔调整建议，表码差 12、账单口径差 24（倍率 2），差异可回到 rev2 报文摘要。"
   },
   {
-    "name": "name",
-    "situation": "situation",
-    "observable": "observable"
+    "name": "跨月换表与编号复用",
+    "situation": "旧表 M7-old 以尾数 1012 退场，新表 M7-new 以首数 8 启用；同一物理设备编号也可能被复用到新表计。",
+    "observable": "表计序列由（供方、设备编号、读数标识）共同界定，换表与复用各自形成独立序列，旧表尾数与新表首数并列保留，不拼接成同一条累计曲线；财务视图标记 reused_meter_code。"
   },
   {
-    "name": "name",
-    "situation": "situation",
-    "observable": "observable"
+    "name": "未知倍率待核",
+    "situation": "新表首条读数 R11 的 multiplier 为 null，倍率尚未核实。",
+    "observable": "读数按待核入库，账单口径读数为 null 且 impact_pending=true，绝不按倍率一入账；倍率补录后影响解除挂起，若快照曾待核，补录后的全额即为释放影响。"
+  },
+  {
+    "name": "乱序补传",
+    "situation": "补传与更正不保证按修订号顺序到达，rev2 可能先于 rev1 接入。",
+    "observable": "reading_facts 只追加，全部修订并存；当前解释始终取最高修订号有效事实，后续到达的低修订号不回退当前解释。"
+  },
+  {
+    "name": "重复投递幂等",
+    "situation": "同一份更正报文因传输重试被重复采集并再次接入。",
+    "observable": "（序列、修订号）唯一约束使重复事实标记 duplicated 而不新增；每个已签发快照同时最多一笔未决建议，重复投递不会生成第二笔调整建议。"
+  },
+  {
+    "name": "调整接受后再更正",
+    "situation": "财务已接受 rev1→rev2 的调整建议，供方又发来 rev3=1030 的再次更正。",
+    "observable": "新建议以 prior_suggestion_id 链接前次已接受建议；总差额对冻结快照计算（60），同时给出相对前次调整后口径 2024 的新增差额 36，决策台账保留接受记录，历史建议不被覆盖。"
   }
 ]

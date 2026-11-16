@@ -18,8 +18,10 @@
 
 ## 领域样例
 
-- `name`：situation；业务侧关注observable。
-- `name`：situation；业务侧关注observable。
-- `name`：situation；业务侧关注observable。
+- 签发后更正：月账按 R10 rev1 估算读数签发后，供方补发 rev2 实测更正；原始报文两条均归档，结构化层冻结签发快照、更新当前解释并只维护一笔调整建议。
+- 跨月换表：M7-old 尾数 1012 与 M7-new 首数 8 分属不同表计序列，即使设备编号被复用也不拼接累计曲线。
+- 未知倍率：R11 的 `multiplier` 为 `null`，读数待核，账单口径影响挂起，禁止按倍率一处理。
+
+业务侧关注的全部交错情况及可观察口径见 `fixtures/business_cases.json`，其回归断言见 `tests/test_structured_ingestion.py`。
 
 另外提供 `/rate-limited`、`/unstable`、`/range`、`/range-ignored`、`/truncated`、`/observations/1`、`/observations/2`、`/observations/3`。响应内容和版本由场景文件逐项声明，便于核对实际收到的来源资料。
